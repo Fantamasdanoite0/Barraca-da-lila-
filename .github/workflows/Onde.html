@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Barraca da Lila</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/2/23/PITU-logo.png') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: brightness(0.85);
+      color: white;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 36px;
+      color: #ffd700;
+    }
+
+    .container {
+      margin: 40px auto;
+      max-width: 600px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00000099;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      width: 45%;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #ffd700;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e6c200;
+    }
+
+    #resultado {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🍻 Barraca da Lila</h1>
+  </header>
+
+  <div class="container">
+    <div class="input-group">
+      <input type="text" id="nome" placeholder="Nome do produto">
+      <input type="text" id="preco" placeholder="Preço (ex: 2.50)">
+      <button onclick="adicionarProduto()">Salvar</button>
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="buscar" placeholder="Buscar produto">
+      <button onclick="buscarProduto()">Buscar</button>
+    </div>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    let precos = JSON.parse(localStorage.getItem("precos")) || {
+      "cocada": "R$2,00",
+      "reisinho": "R$2,00",
+      "nucita": "R$1,00",
+      "tortuguita": "R$1,50",
+      "coca cola": "R$9,00",
+      "latao pitu": "R$8,00 ou R$9,00",
+      "toddynho": "R$3,50",
+      "hambúrguer": "R$8,00",
+      "pipoca branca": "R$2,00",
+      "empada": "R$1,50",
+      "paçoca": "R$0,50",
+      "açai": "R$14,00",
+      "pipos": "R$5,00",
+      "dreah": "R$6,00"
+    };
+
+    function salvarPrecos() {
+      localStorage.setItem("precos", JSON.stringify(precos));
+    }
+
+    function adicionarProduto() {
+      const nome = document.getElementById("nome").value.toLowerCase().trim();
+      const preco = document.getElementById("preco").value.trim();
+
+      if (!nome || !preco) {
+        alert("Preencha o nome e o preço!");
+        return;
+      }
+
+      precos[nome] = `R$${preco.replace(",", ".")}`;
+      salvarPrecos();
+      document.getElementById("nome").value = "";
+      document.getElementById("preco").value = "";
+    }
+
+    function buscarProduto() {
+      const nome = document.getElementById("buscar").value.toLowerCase().trim();
+      const resultado = document.getElementById("resultado");
+
+      if (precos[nome]) {
+        resultado.innerHTML = `<strong>${nome}</strong>: ${precos[nome]}`;
+      } else {
+        resultado.textContent = "Produto não encontrado.";
+      }
+    }
+  </script>
+
+</body>
+</html>
